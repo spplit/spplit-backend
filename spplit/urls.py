@@ -18,7 +18,6 @@ urlpatterns = [
 
 
     path('mycard/', mycard_list),
-    path('mycard/add', mycard_add),
     path('mycard/<int:pk>', mycard_detail),
 
     path('card/add', CardAddView.as_view()),

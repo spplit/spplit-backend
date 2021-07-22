@@ -36,11 +36,10 @@ class ChangeUserInfoSerializer(serializers.Serializer) :
 class MyCardSerializer(serializers.ModelSerializer) :
     
     author_name = serializers.ReadOnlyField(source='author.username')
-    unique_num = serializers.ReadOnlyField()
 
     class Meta :
         model = MyCard
-        fields= ('id', 'author', 'name', 'job', 'phone', 'email', 'tag1', 'tag2', 'tag3', 'author_name', 'unique_num',)
+        fields= ('id', 'author', 'name', 'job', 'phone', 'email', 'tag1', 'tag2', 'tag3', 'author_name', )
 
 
 class CardSerializer(serializers.ModelSerializer) :
@@ -55,7 +54,7 @@ class CardSerializer(serializers.ModelSerializer) :
 
 class AddCardSerializer(serializers.Serializer) :
     
-    qr_code = serializers.IntegerField(required=True)
+    qr_code = serializers.CharField(required=True)
 
 
 

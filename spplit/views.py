@@ -43,8 +43,8 @@ class UserInfoViewSet(viewsets.ModelViewSet) :
 # 유저정보 변경 - 번호 변경
 class ChangeUserInfoView(generics.UpdateAPIView) :
 
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
 
     model = User
     serializer_class = ChangeUserInfoSerializer
@@ -67,8 +67,8 @@ class ChangeUserInfoView(generics.UpdateAPIView) :
 # 비밀번호 변경
 class ChangePasswordView(generics.UpdateAPIView) :
 
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
 
     model = User
     serializer_class = ChangePasswordSerializer
@@ -92,19 +92,6 @@ class ChangePasswordView(generics.UpdateAPIView) :
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# # 로그아웃
-# class UserLogoutView(RedirectView):
-
-#     permission_classes = [IsAuthenticated]
-#     authentication_classes = [TokenAuthentication]
-
-#     url = '/login/'
-
-#     def get(self, request, *args, **kwargs):
-#         auth_logout(request)
-#         return super(UserLogoutView, self).get(request, *args, **kwargs)
-
-
 # 내명함 관리 (조회, 추가, 수정, 삭제)
 class MyCardViewSet(viewsets.ModelViewSet) :
 
@@ -115,9 +102,9 @@ class MyCardViewSet(viewsets.ModelViewSet) :
     serializer_class = MyCardSerializer
 
     def perform_create(self, serializer):
-        mycards = MyCard.objects.filter(author = self.request.user)
-        unique_num = int(str(random.randint(100, 999)) + str(self.request.user.id) + str(len(mycards)) + str(random.randint(100, 999)))
-        serializer.save(author = self.request.user, unique_num = unique_num)
+        # mycards = MyCard.objects.filter(author = self.request.user)
+        # unique_num = int(str(random.randint(100, 999)) + str(self.request.user.id) + str(len(mycards)) + str(random.randint(100, 999)))
+        serializer.save(author = self.request.user)
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -133,14 +120,16 @@ class MyCardViewSet(viewsets.ModelViewSet) :
 # qr로 명함 추가 -> 명함 추가 시 관계까지 자동 추가 // 일단 자동으로 추가 / 상대방이 accept하지 않으면 DB에서 바로 삭제(추후 구현)
 class CardAddView(APIView) :
 
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
 
+    # 1단계 친구request를 보냄 -> 2단계 친구request수락 -> 3단계 친구request를 지움과 동시에 친구list에 추가 -> 4단계 명함 추가
     def post(self, request) :
         serializer = AddCardSerializer(data=request.data)
 
         if serializer.is_valid() :
-            card = MyCard.objects.get(unique_num = request.data["qr_code"])
+            # card = MyCard.objects.get(unique_num = request.data["qr_code"])
+            card = MyCard.objects.get(pk = request.data["qr_code"])
 
             if not Card.objects.filter(owner = self.request.user, follow_mycard = card) :
                 if not self.request.user.id == card.author_id :
@@ -162,8 +151,8 @@ class CardAddView(APIView) :
 # 남의 명함 관리 조회, 수정, 삭제 -> 명함 삭제 시 관계도 삭제됨
 class CardViewSet(viewsets.ModelViewSet) :
 
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
 
     queryset = Card.objects.all()
     serializer_class = CardSerializer
@@ -177,12 +166,12 @@ class CardViewSet(viewsets.ModelViewSet) :
             qs = qs.none()
         return qs
 
-    # # test용 / too complicated
-    info = MyCard.objects.filter(id = queryset.values()[0]["follow_mycard_id"])
-    print(info.values()[0]["name"])
-    print(info.values()[0]["job"])
-    print(info.values()[0]["email"])
-    print(info.values()[0]["phone"])
+    # # # test용 / too complicated
+    # info = MyCard.objects.filter(id = queryset.values()[0]["follow_mycard_id"])
+    # print(info.values()[0]["name"])
+    # print(info.values()[0]["job"])
+    # print(info.values()[0]["email"])
+    # print(info.values()[0]["phone"])
 
 
 # 메소드 구분
@@ -198,12 +187,6 @@ mycard_list = MyCardViewSet.as_view({
     'get': 'list',
     'post': 'create',
 })
-
-mycard_add = MyCardViewSet.as_view({
-    'post': 'create',
-    'get': 'list',
-})
-
 mycard_detail = MyCardViewSet.as_view({
     'get': 'retrieve', # 조회
     'put': 'update', # 수정

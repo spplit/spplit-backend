@@ -5,6 +5,7 @@ from django.db import connections, models
 from django.utils import timezone
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+import uuid
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -58,6 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin) :
 
 
 class MyCard(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
 
     name = models.CharField(max_length = 20, verbose_name = '이름')
@@ -69,7 +71,7 @@ class MyCard(models.Model):
     tag2= models.CharField(max_length = 20, verbose_name = '태그2', default='태그2')
     tag3= models.CharField(max_length = 20, verbose_name = '태그3', default='태그3')
     
-    unique_num = models.IntegerField(default=0, verbose_name = '고유번호')
+    # unique_num = models.IntegerField(default=0, verbose_name = '고유번호')
     register_date = models.DateTimeField(auto_now_add=True, verbose_name = '등록날짜')
     update_date = models.DateTimeField(auto_now=True, verbose_name = '마지막수정일')
 
@@ -124,7 +126,6 @@ class Card(models.Model):
 
 class Relation(models.Model) :
     from_user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, related_name='from_user', on_delete=models.CASCADE) # 팔로우 요청한 유저
-    # follow_card_id = models.IntegerField(default=0, verbose_name = '고유번호') # 팔로우되어있는 카드번호
     follow_card = models.ForeignKey(Card, on_delete=models.CASCADE)  # 팔로우되어있는 카드번호
     # status = models.IntegerField(choices=RELATIONSHIP_STATUSES)
 
