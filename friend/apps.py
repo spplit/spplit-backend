@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SpplitConfig(AppConfig):
+class FriendConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'spplit'
+    name = 'friend'
