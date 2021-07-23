@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 from card.models import MyCard
 
 class CardList(models.Model):
@@ -10,13 +11,13 @@ class CardList(models.Model):
         return self.user.username
 
     def add_card(self, cardId):
-        card = MyCard.obejcts.get(id=cardId)
+        card = get_object_or_404(MyCard, id=cardId)
 
         self.cards.add(card)
         self.save
 
     def remove_card(self, cardId):
-        removee = MyCard.obejcts.get(id=cardId)
+        card = get_object_or_404(MyCard, id=cardId)
 
         if removee in self.cards.all():
             self.cards.remove(removee)

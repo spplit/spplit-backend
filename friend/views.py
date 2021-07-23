@@ -19,3 +19,11 @@ class CardRequestViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(sender=self.request.user)
+
+    @action(detail=False, method=['POST'])
+    def accept(request):
+        cardId = self.request.POST['cardId']
+
+    @action(detail=False, method=['POST'])
+    def decline(request):
+        cardId = self.request.POST['cardId']
