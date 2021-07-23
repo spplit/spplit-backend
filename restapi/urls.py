@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('spplitAccount.urls')),
     path('', include('card.urls')),
-    #path('', include('spplit.urls')),
+    path('', include('friend.urls')),
+    
 ]

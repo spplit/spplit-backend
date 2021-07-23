@@ -1,3 +1,56 @@
 from django.db import models
+from django.conf import settings
+from card.models import MyCard
 
-# Create your models here.
+class CardList(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user")
+    cards = models.ManyToManyField('card.MyCard', blank=True, related_name="cards")
+
+    def __str__(self):
+        return self.user.username
+
+    def add_card(self, cardId):
+        card = MyCard.obejcts.get(id=cardId)
+
+        self.cards.add(card)
+        self.save
+
+    def remove_card(self, cardId):
+        removee = MyCard.obejcts.get(id=cardId)
+
+        if removee in self.cards.all():
+            self.cards.remove(removee)
+
+    
+class CardRequest(models.Model):
+    '''
+        sender : QR 코드 인식하고 카드 추가 요청한 user
+        receiver : QR 코드 제공한 user
+        cardId : card의 uuid
+        timestamp : request가 요청되어 생성된 시간
+        is_active : request가 진행중이면 True  accept/decline/cancel되어 진행중이 아니라면 False
+    '''
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sender")
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver")
+    cardId = models.CharField(max_length=50)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_active = True
+
+    def __str__(self):
+        return self.sender.username
+
+    def accept(self):
+        sender_card_list = CardList.obejcts.get(user=self.sender)
+
+        if sender_card_list:
+            sender_card_list.add_card(cardId)
+            self.is_active = False
+            self.save()
+
+    def decline(self):
+        self.is_active = False
+        self.save()
+
+    def cancel(self):
+        self.is_active = False
+        self.save()

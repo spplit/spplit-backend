@@ -41,7 +41,7 @@ class CardAddView(APIView) :
     # authentication_classes = [TokenAuthentication]
 
     # 1단계 친구request를 보냄 -> 2단계 친구request수락 -> 3단계 친구request를 지움과 동시에 친구list에 추가 -> 4단계 명함 추가
-    def post(self, request) :
+    def post(self, request, format=None) :
         serializer = AddCardSerializer(data=request.data)
 
         if serializer.is_valid() :
