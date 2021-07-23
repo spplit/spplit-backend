@@ -25,8 +25,8 @@ request_detail = CardRequestViewSet.as_view({
     'delete': 'destroy',
 })
 
-request_accept = CardRequestViewSet.as_view({'post':'accept'})
-request_decline = CardRequestViewSet.as_view({'post':'decline'})
+request_accept = CardRequestViewSet.as_view({'get':'accept'})
+request_decline = CardRequestViewSet.as_view({'get':'decline'})
 
 urlpatterns = [
     path('friendcard', friendcard_list, name="friendcard-list"),

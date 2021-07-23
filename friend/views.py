@@ -34,11 +34,11 @@ class CardRequestViewSet(viewsets.ModelViewSet):
             added_card_request.save()
 
     # accept > card_list에 추가 > request_list에서 제거
-    @action(detail=False, method=['POST'])
+    @action(detail=False, method=['GET'])
     def accept(request):
-        cardId = self.request.POST['cardId']
+        cardId = self.request.GET['cardId']
 
     # decline > request_list에서 제거
-    @action(detail=False, method=['POST'])
+    @action(detail=False, method=['GET'])
     def decline(request):
-        cardId = self.request.POST['cardId']
+        cardId = self.request.GET['cardId']
