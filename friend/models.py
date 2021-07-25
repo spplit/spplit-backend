@@ -32,7 +32,7 @@ class CardRequest(models.Model):
         is_active : request가 진행중이면 True  accept/decline/cancel되어 진행중이 아니라면 False
     '''
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sender")
-    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="receiver")
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, related_name="receiver")
     cardId = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_active = True
