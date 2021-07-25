@@ -28,18 +28,11 @@ class CardRequestViewSet(viewsets.ModelViewSet):
         cardId = self.request.POST['cardId']
         if cardId:
             receiver = get_object_or_404(MyCard, id=cardId).author
-            card_request = CardRequest.objects.get(sender=self.user, receiver=receiver, cardId=cardId)
+            card_request = CardRequest.objects.filter(sender=self.request.user, receiver=receiver, cardId=cardId)
+            print(card_request)
             if card_request:
                 return Response(status=status.HTTP_409_CONFLICT)
-            added_card_request = CardRequest(sender=self.user, receiver=receiver, cardId=cardId)
+            added_card_request = CardRequest(sender=self.request.user, receiver=receiver, cardId=cardId)
             added_card_request.save()
+            return Response(status=status.HTTP_200_OK)
 
-    # accept > card_list에 추가 > request_list에서 제거
-    @action(detail=False, method=['GET'])
-    def accept(request):
-        cardId = self.request.GET['cardId']
-
-    # decline > request_list에서 제거
-    @action(detail=False, method=['GET'])
-    def decline(request):
-        cardId = self.request.GET['cardId']
