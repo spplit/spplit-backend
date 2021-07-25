@@ -34,6 +34,12 @@ class CardRequestViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save(sender=self.request.user, receiver=receiver)
             return Response(status=status.HTTP_200_OK)
-        
-        
+
+    @action(detail=True, method=["GET"])
+    def accept(self, request, pk=None):
+        request = get_object_or_404(CardRequest, pk=pk)
+
+    @action(detail=True, method=["GET"])
+    def decline(self, request, pk=None):
+        request = get_object_or_404(CardRequest, pk=pk)
 
