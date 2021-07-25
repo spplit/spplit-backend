@@ -26,13 +26,14 @@ class CardRequestViewSet(viewsets.ModelViewSet):
     # send_friend_request 
     def create(self, request, *args, **kwargs):
         cardId = self.request.POST['cardId']
-        if cardId:
-            receiver = get_object_or_404(MyCard, id=cardId).author
-            card_request = CardRequest.objects.filter(sender=self.request.user, receiver=receiver, cardId=cardId)
-            print(card_request)
-            if card_request:
-                return Response(status=status.HTTP_409_CONFLICT)
-            added_card_request = CardRequest(sender=self.request.user, receiver=receiver, cardId=cardId)
-            added_card_request.save()
+        receiver = get_object_or_404(MyCard, id=cardId).author
+        card_request = CardRequest.objects.filter(sender=self.request.user, receiver=receiver, cardId=cardId)
+        if card_request:
+            return Response(status=status.HTTP_409_CONFLICT)
+        serializer = CardRequestSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save(sender=self.request.user, receiver=receiver)
             return Response(status=status.HTTP_200_OK)
+        
+        
 
