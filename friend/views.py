@@ -18,10 +18,15 @@ class CardListViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    @action(detail=False, methods=['POST'])
+    def delete_friendcard(self,request):
+        cardId = self.request.POST['cardId']
+
 class CardRequestViewSet(viewsets.ModelViewSet):
     queryset = CardRequest.objects.all()
     serializer_class = CardRequestSerializers
 
+ 
     def perform_create(self, serializer):
         serializer.save(sender=self.request.user)
 
