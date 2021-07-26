@@ -27,6 +27,7 @@ request_detail = CardRequestViewSet.as_view({
 
 request_accept = CardRequestViewSet.as_view({'get':'accept'})
 request_decline = CardRequestViewSet.as_view({'get':'decline'})
+request_cancel = CardRequestViewSet.as_view({'get':'cancel'})
 
 urlpatterns = [
     path('', api_root),
@@ -36,4 +37,5 @@ urlpatterns = [
     path('request/<int:pk>/', request_detail, name="request-detail"),
     path('request/<int:pk>/accept', request_accept, name="request-accept"),
     path('request/<int:pk>/decline', request_decline, name="request-decline"),
+    path('request/<int:pk>/cancel', request_cancel, name="request-cancel"),
 ]
