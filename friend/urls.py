@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CardListViewSet, CardRequestViewSet
+from .views import CardListViewSet, CardRequestViewSet, api_root
 
 friendcard_list = CardListViewSet.as_view({
     'get': 'list',
@@ -29,6 +29,7 @@ request_accept = CardRequestViewSet.as_view({'get':'accept'})
 request_decline = CardRequestViewSet.as_view({'get':'decline'})
 
 urlpatterns = [
+    path('', api_root),
     path('friendcard', friendcard_list, name="friendcard-list"),
     path('friendcard/<int:pk>/', friendcard_detail, name="friendcard-detail"),
     path('request',request_list, name="request-list"),

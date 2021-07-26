@@ -26,12 +26,12 @@ card_detail = CardViewSet.as_view({
 
 urlpatterns = [
 
-    path('mycard/', mycard_list),
-    path('mycard/<int:pk>', mycard_detail),
+    path('mycard/', mycard_list, name="mycard-list"),
+    path('mycard/<int:pk>', mycard_detail, name="mycard-detail"),
 
     path('card/add', CardAddView.as_view()),
-    path('card/', card_list),
-    path('card/<int:pk>', card_detail),
+    path('card/', card_list, name="card-list"),
+    path('card/<int:pk>', card_detail, name="card-detail"),
 
 ]
 
