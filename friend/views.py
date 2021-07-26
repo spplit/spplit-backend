@@ -29,6 +29,8 @@ class CardRequestViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         cardId = self.request.POST['cardId']
         receiver = get_object_or_404(MyCard, id=cardId).author
+        if receiver == self.request.user:
+            return Response("You can't add your namecard to your account card list",status=status.HTTP_404_NOT_FOUND)
         card_request = CardRequest.objects.filter(sender=self.request.user, receiver=receiver, cardId=cardId)
         if card_request:
             return Response("You already send a friend request to her/him",status=status.HTTP_409_CONFLICT)
@@ -51,10 +53,22 @@ class CardRequestViewSet(viewsets.ModelViewSet):
     def decline(self, request, pk=None):
         request = get_object_or_404(CardRequest, pk=pk)
         if request.sender == self.request.user:
-            return Response("You can't decline your request, recommend you to delete request in another way",status=status.HTTP_404_NOT_FOUND)
+            return Response("You can't decline your request, recommend you to cancel request if you want to delete request you sent",status=status.HTTP_404_NOT_FOUND)
         request.decline()
         request.delete()
         return Response(status=status.HTTP_200_OK)
+
+    @action(detail=True, method=["GET"])
+    def cancel(self, request, pk=None):
+        request = get_object_or_404(CardRequest, pk=pk)
+        if request.sender == self.request.user:
+            request.cancel()
+            request.delete()
+            return Response(status=status.HTTP_200_OK)
+        return Response("You can't cancel request of another people",status=status.HTTP_404_NOT_FOUND)
+        
+        return Response(status=status.HTTP_200_OK)   
+
 
 @api_view(['GET'])
 def api_root(request, format=None):
