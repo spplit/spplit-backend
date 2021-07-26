@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from card.models import MyCard
+from card.models import MyCard, Card
 
 class CardList(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user")
@@ -41,13 +41,17 @@ class CardRequest(models.Model):
         return self.sender.username
 
     def accept(self):
-        sender_card_list = CardList.obejcts.filter(user=self.request.sender)
-
-        if not sender_card_list.count():
-            sender_card_list = CardList(sender=self.request.user)
+        sender_card_list = CardList.objects.filter(user=self.sender).first()
+        receiver_card = MyCard.objects.filter(id=self.cardId).first()
+        if not sender_card_list:
+            print("모델 row 존재하지 않음 -> 생성")
+            sender_card_list = CardList(user=self.sender)
             sender_card_list.save()
-
-        sender_card_list.add_card(cardId)
+        
+        sender_card_list.add_card(cardId=self.cardId)
+        if receiver_card:
+            card = Card(owner=self.sender, friend_card=receiver_card)
+            card.save()
         self.is_active = False
         self.save()
 
