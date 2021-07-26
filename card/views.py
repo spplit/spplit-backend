@@ -5,8 +5,10 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import action
 from django.http.response import Http404
-from .models import MyCard
+from django.shortcuts import get_object_or_404
+from .models import MyCard, Card
 from .serializers import *
 
 # 내명함 관리 (조회, 추가, 수정, 삭제)
@@ -29,6 +31,12 @@ class MyCardViewSet(viewsets.ModelViewSet) :
         else :
             qs = qs.none()
         return qs
+
+    @action(detail=True, method=["GET"])
+    def count_user_mycard(self, request, pk=None):
+        mycard = get_object_or_404(MyCard, pk=pk)
+        user_list = Card.objects.filter(friend_card=mycard)
+        return Response({'count_user':user_list.count()}, status=status.HTTP_200_OK)
 
 
 # 남의 명함 관리 조회, 수정, 삭제 -> 명함 삭제 시 관계도 삭제됨

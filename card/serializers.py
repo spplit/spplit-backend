@@ -25,3 +25,5 @@ class AddCardSerializer(serializers.Serializer) :
     qr_code = serializers.CharField(required=True)
 
 
+class UserCountSerializer(serializers.Serializer):
+    count_user_mycard = serializers.IntegerField()
