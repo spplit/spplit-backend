@@ -31,38 +31,6 @@ class MyCardViewSet(viewsets.ModelViewSet) :
         return qs
 
 
-
-# qr로 명함 추가 -> 명함 추가 시 관계까지 자동 추가 // 일단 자동으로 추가 / 상대방이 accept하지 않으면 DB에서 바로 삭제(추후 구현)
-class CardAddView(APIView) :
-
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
-
-    # 1단계 친구request를 보냄 -> 2단계 친구request수락 -> 3단계 친구request를 지움과 동시에 친구list에 추가 -> 4단계 명함 추가
-    def post(self, request, format=None) :
-        serializer = AddCardSerializer(data=request.data)
-
-        if serializer.is_valid() :
-            # card = MyCard.objects.get(unique_num = request.data["qr_code"])
-            card = MyCard.objects.get(pk = request.data["qr_code"])
-
-            if not Card.objects.filter(owner = self.request.user, follow_mycard = card) :
-                if not self.request.user.id == card.author_id :
-
-                    # 명함 객체 추가
-                    Card.objects.create(owner = self.request.user, follow_mycard = card)
-
-                    # 관계 객체 추가
-                    follow_card = Card.objects.filter(owner = self.request.user).get(follow_mycard = card)
-                    Relation.objects.create(from_user = self.request.user, follow_card = follow_card)
-
-                    return Response("new card&relation added", status = status.HTTP_201_CREATED)
-                return Response("active user is same as the owner of card", status = status.HTTP_400_BAD_REQUEST)
-            return Response("already exists", status = status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-
-
-
 # 남의 명함 관리 조회, 수정, 삭제 -> 명함 삭제 시 관계도 삭제됨
 class CardViewSet(viewsets.ModelViewSet) :
 

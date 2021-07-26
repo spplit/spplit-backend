@@ -31,7 +31,7 @@ class CardRequestViewSet(viewsets.ModelViewSet):
         receiver = get_object_or_404(MyCard, id=cardId).author
         card_request = CardRequest.objects.filter(sender=self.request.user, receiver=receiver, cardId=cardId)
         if card_request:
-            return Response(status=status.HTTP_409_CONFLICT)
+            return Response("You already send a friend request to her/him",status=status.HTTP_409_CONFLICT)
         serializer = CardRequestSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save(sender=self.request.user, receiver=receiver)
@@ -40,10 +40,21 @@ class CardRequestViewSet(viewsets.ModelViewSet):
     @action(detail=True, method=["GET"])
     def accept(self, request, pk=None):
         request = get_object_or_404(CardRequest, pk=pk)
+        if request.sender == self.request.user:
+            return Response("You can't add your namecard to your account card list",status=status.HTTP_404_NOT_FOUND)
+        request.accept()
+        request.delete()
+        return Response(status=status.HTTP_200_OK)
+
 
     @action(detail=True, method=["GET"])
     def decline(self, request, pk=None):
         request = get_object_or_404(CardRequest, pk=pk)
+        if request.sender == self.request.user:
+            return Response("You can't decline your request, recommend you to delete request in another way",status=status.HTTP_404_NOT_FOUND)
+        request.decline()
+        request.delete()
+        return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def api_root(request, format=None):
