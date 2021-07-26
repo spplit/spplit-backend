@@ -19,8 +19,6 @@ class MyCardViewSet(viewsets.ModelViewSet) :
     serializer_class = MyCardSerializer
 
     def perform_create(self, serializer):
-        # mycards = MyCard.objects.filter(author = self.request.user)
-        # unique_num = int(str(random.randint(100, 999)) + str(self.request.user.id) + str(len(mycards)) + str(random.randint(100, 999)))
         serializer.save(author = self.request.user)
 
     def get_queryset(self):
@@ -73,6 +71,9 @@ class CardViewSet(viewsets.ModelViewSet) :
 
     queryset = Card.objects.all()
     serializer_class = CardSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner = self.request.user)
 
     def get_queryset(self):
         qs = super().get_queryset()
