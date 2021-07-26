@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework import status
 from django.http.response import Http404
@@ -43,3 +45,11 @@ class CardRequestViewSet(viewsets.ModelViewSet):
     def decline(self, request, pk=None):
         request = get_object_or_404(CardRequest, pk=pk)
 
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'mycard' : reverse('mycard-list',request=request, format=format),
+        'card' : reverse('card-list',request=request, format=format),
+        'friendcard' : reverse('friendcard-list',request=request, format=format),
+        'request' : reverse('request-list',request=request, format=format),
+    })

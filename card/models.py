@@ -29,7 +29,7 @@ class MyCard(models.Model):
 
 class Card(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
-    follow_mycard = models.ForeignKey(MyCard, on_delete=models.CASCADE) # mycard에서 가져올 카드정보
+    friend_card = models.ForeignKey(MyCard, on_delete=models.CASCADE) # mycard에서 가져올 카드정보
     custom_tag1 = models.CharField(max_length = 20, verbose_name = '커스텀태그1', blank=True, null=True)
     custom_tag2 = models.CharField(max_length = 20, verbose_name = '커스텀태그2', blank=True, null=True)
     custom_tag3 = models.CharField(max_length = 20, verbose_name = '커스텀태그3', blank=True, null=True)
