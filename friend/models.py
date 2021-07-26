@@ -41,12 +41,15 @@ class CardRequest(models.Model):
         return self.sender.username
 
     def accept(self):
-        sender_card_list = CardList.obejcts.get(user=self.sender)
+        sender_card_list = CardList.obejcts.filter(user=self.request.sender)
 
-        if sender_card_list:
-            sender_card_list.add_card(cardId)
-            self.is_active = False
-            self.save()
+        if not sender_card_list.count():
+            sender_card_list = CardList(sender=self.request.user)
+            sender_card_list.save()
+
+        sender_card_list.add_card(cardId)
+        self.is_active = False
+        self.save()
 
     def decline(self):
         self.is_active = False
