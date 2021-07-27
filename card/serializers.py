@@ -20,6 +20,5 @@ class CardSerializer(serializers.ModelSerializer) :
         fields = ('id', 'owner_name', 'friend_card', 'custom_tag1',
             'custom_tag2', 'custom_tag3', 'custom_tag4', 'custom_tag5', 'notes', 'division', 'isBookmarked', 'owner_name',)
 
-
 class UserCountSerializer(serializers.Serializer):
     count_user_mycard = serializers.IntegerField()

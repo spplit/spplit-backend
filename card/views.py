@@ -12,9 +12,13 @@ from .models import MyCard, Card
 from friend.models import CardList
 from .serializers import *
 
-# 내명함 관리 (조회, 추가, 수정, 삭제)
 class MyCardViewSet(viewsets.ModelViewSet) :
+    '''
+        내 명함 관리 (조회, 추가, 수정, 삭제)
 
+        Functions 
+            count_user_mycard : 나의 명함을 갖고있는 사람이 몇명인지 count
+    '''
     # permission_classes = [IsAuthenticated]
     # authentication_classes = [TokenAuthentication]
 
@@ -40,8 +44,15 @@ class MyCardViewSet(viewsets.ModelViewSet) :
         return Response({'count_user':user_list.count()}, status=status.HTTP_200_OK)
 
 
-# 남의 명함 관리 조회, 수정, 삭제 -> 명함 삭제 시 관계도 삭제됨
 class CardViewSet(viewsets.ModelViewSet) :
+    '''
+        내가 소유하고 있는 남의 명함 관리 
+        (조회, 수정, 삭제 -> 명함 삭제 시 관계도 삭제됨)
+
+        Functions 
+            destroy : delete override
+                      card list에서 해당 카드 삭제, friend card list에서 해당 카드 삭제
+    '''
 
     # permission_classes = [IsAuthenticated]
     # authentication_classes = [TokenAuthentication]
