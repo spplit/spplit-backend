@@ -16,8 +16,7 @@ class CardList(models.Model):
         self.cards.add(card)
         self.save
 
-    def remove_card(self, cardId):
-        card = get_object_or_404(MyCard, id=cardId)
+    def remove_card(self, removee):
 
         if removee in self.cards.all():
             self.cards.remove(removee)
