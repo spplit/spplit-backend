@@ -52,6 +52,16 @@ class CardViewSet(viewsets.ModelViewSet) :
     def perform_create(self, serializer):
         serializer.save(owner = self.request.user)
 
+        # 아래의 코드는 원활한 테스트를 위한 코드, 배포시에는 필요없는 코드임
+        card_list = CardList.objects.filter(user=self.request.user).first()
+        cardId = self.request.POST['friend_card']
+        if not card_list:
+            print("모델 row 존재하지 않음 -> 생성")
+            card_list = CardList(user=self.request.user)
+            card_list.save()
+        card_list.add_card(cardId=cardId)
+        # 위의 코드는 원활한 테스트를 위한 코드, 배포시에는 필요없는 코드임
+
     def get_queryset(self):
         qs = super().get_queryset()
 
@@ -70,11 +80,4 @@ class CardViewSet(viewsets.ModelViewSet) :
         card.delete()
         user_cardlist = CardList.objects.get(user=self.request.user)
         user_cardlist.remove_card(card.friend_card)
-        return Response(status=status.HTTP_200_OK)
-
-    # # # test용 / too complicated
-    # info = MyCard.objects.filter(id = queryset.values()[0]["follow_mycard_id"])
-    # print(info.values()[0]["name"])
-    # print(info.values()[0]["job"])
-    # print(info.values()[0]["email"])
-    # print(info.values()[0]["phone"])
+        return Response(status=status.HTTP_204_NO_CONTENT)
