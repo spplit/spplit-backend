@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http.response import Http404
 from django.shortcuts import get_object_or_404
-from card.models import MyCard
+from card.models import MyCard, Card
 from .models import CardList, CardRequest
 from .serializers import CardListSerializers, CardRequestSerializers
 
@@ -35,6 +35,9 @@ class CardRequestViewSet(viewsets.ModelViewSet):
         card_request = CardRequest.objects.filter(sender=self.request.user, receiver=receiver, cardId=cardId)
         if card_request:
             return Response("You already send a friend request to her/him",status=status.HTTP_409_CONFLICT)
+        card_exist = Card.objects.filter(owner=self.request.user, friend_card=cardId)
+        if card_exist:
+            return Response("You already add this card to your friend card list",status=status.HTTP_409_CONFLICT)
         serializer = CardRequestSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save(sender=self.request.user, receiver=receiver)
@@ -59,6 +62,7 @@ class CardRequestViewSet(viewsets.ModelViewSet):
         request.delete()
         return Response(status=status.HTTP_200_OK)
 
+    #cancel은 그냥 request detail에서 delete해도 되는 것 같음, 확인 필요
     @action(detail=True, method=["GET"])
     def cancel(self, request, pk=None):
         request = get_object_or_404(CardRequest, pk=pk)

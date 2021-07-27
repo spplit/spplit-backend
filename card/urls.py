@@ -14,7 +14,7 @@ mycard_detail = MyCardViewSet.as_view({
 
 card_list = CardViewSet.as_view({
     'get': 'list',
-    'post' : 'create',
+    #'post' : 'create', #테스트용으로 쓰는 friend card 추가 view 일단 막아둠
 })
 
 card_detail = CardViewSet.as_view({
