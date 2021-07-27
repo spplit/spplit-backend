@@ -24,10 +24,13 @@ card_detail = CardViewSet.as_view({
     'delete': 'destroy', 
 })
 
+count_user = MyCardViewSet.as_view({'get':'count_user_mycard'})
+
 urlpatterns = [
 
     path('mycard/', mycard_list, name="mycard-list"),
-    path('mycard/<int:pk>', mycard_detail, name="mycard-detail"),
+    path('mycard/<uuid:pk>', mycard_detail, name="mycard-detail"),
+    path('mycard/<uuid:pk>/count', count_user, name="count-user"),
     path('card/', card_list, name="card-list"),
     path('card/<int:pk>', card_detail, name="card-detail"),
 
