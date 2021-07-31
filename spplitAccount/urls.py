@@ -7,20 +7,23 @@ user_info = UserInfoViewSet.as_view({
     'get': 'list',
 })
 
-user_detail = UserInfoViewSet.as_view({
-    'patch': 'partial_update',
+category_list = CategoryViewSet.as_view({
+    'get': 'list',
 })
 
 urlpatterns = [
     
-    path('register/', RegisterView.as_view()),
-    path('login/', LoginView.as_view()),
-    # path('logout/', UserLogoutView.as_view()),
-    path('logout/', LogoutView.as_view()),
+    # path('register', RegisterView.as_view()),
+    path('register', CustomRegisterView.as_view()),
+    path('login', LoginView.as_view()),
+    path('logout', LogoutView.as_view()),
 
     path('password/change', ChangePasswordView.as_view()),
 
-    path('user/', user_info),
+    path('user', user_info),
     path('user/change', ChangeUserInfoView.as_view()),
+
+    path('user/category', category_list),
+    path('user/category/change', ChangeCategoryView.as_view()),
 ]
 
