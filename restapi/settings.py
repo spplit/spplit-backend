@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'spplitAccount',
     'card',
     'friend',
+    'appointment',
 ]
 
 MIDDLEWARE = [
@@ -152,6 +153,13 @@ REST_FRAMEWORK = {
     ]
 }
 
+# custom register serializer
+REST_AUTH_REGISTER_SERIALIZERS = {
+        'REGISTER_SERIALIZER': 'spplitAccount.serializers.CustomRegisterSerializer',
+}
+
+ACCOUNT_ADAPTER = 'spplitAccount.adapter.CustomAccountAdapter'
+
 # REST_USE_JWT = True
 
 SITE_ID = 1
@@ -160,5 +168,5 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-# ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_LOGOUT_ON_GET = True

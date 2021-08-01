@@ -1,8 +1,16 @@
+from unicodedata import category
 from django.contrib import admin
 from .models import *
 
-@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'email', 'username', 'phone', 'is_superuser', 'is_active',)
+    list_display = ('id', 'email', 'username', 'phone',)
     list_display_links = ('id', 'email',)
     exclude = ('password',)    
+
+
+class CategoryAdmin(admin.ModelAdmin) :
+    list_display = ('id', 'user',)
+    list_display_links = ('id', 'user',)
+
+admin.site.register(User, UserAdmin)
+admin.site.register(Category, CategoryAdmin)

@@ -22,6 +22,7 @@ urlpatterns = [
     path('',include('spplitAccount.urls')),
     path('', include('card.urls')),
     path('', include('friend.urls')),
+    path('', include('appointment.urls')),
     path('api-auth',include('rest_framework.urls'))
     
 ]

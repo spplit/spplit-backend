@@ -19,8 +19,8 @@ class MyCardViewSet(viewsets.ModelViewSet) :
         Functions 
             count_user_mycard : 나의 명함을 갖고있는 사람이 몇명인지 count
     '''
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     queryset = MyCard.objects.all()
     serializer_class = MyCardSerializer
@@ -54,8 +54,8 @@ class CardViewSet(viewsets.ModelViewSet) :
                       card list에서 해당 카드 삭제, friend card list에서 해당 카드 삭제
     '''
 
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     queryset = Card.objects.all()
     serializer_class = CardSerializer
