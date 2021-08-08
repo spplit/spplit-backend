@@ -18,8 +18,8 @@ class CardListViewSet(viewsets.ModelViewSet):
         내가 소유한 타인의 카드 list
     '''
 
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     queryset = CardList.objects.all()
     serializer_class = CardListSerializers
@@ -40,8 +40,8 @@ class CardRequestViewSet(viewsets.ModelViewSet):
             cancel : 본인이 보낸 요청 취소 (타인이 보낸 요청 취소 방지)
     '''
 
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     queryset = CardRequest.objects.all()
     serializer_class = CardRequestSerializers
