@@ -54,8 +54,8 @@ class CardViewSet(viewsets.ModelViewSet) :
                       card list에서 해당 카드 삭제, friend card list에서 해당 카드 삭제
     '''
 
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
+    #authentication_classes = [TokenAuthentication]
 
     queryset = Card.objects.all()
     serializer_class = CardSerializer
