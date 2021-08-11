@@ -77,4 +77,29 @@ class Category(models.Model) :
         verbose_name = '카테고리'
         verbose_name_plural = '카테고리'
 
+class Division(models.Model) :
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="division_user")
+
+    category1 = models.CharField(max_length=30, default="All", null=False, blank=False, editable=False)
+    is_checked_category1 = models.BooleanField(default=True, editable=False)
+    category2 = models.CharField(max_length=30, default="Bookmark", null=False, blank=False, editable=False)
+    is_checked_category2 = models.BooleanField(default=True, editable=False)
+    category3 = models.CharField(max_length=30, default="Work", null=False, blank=False, editable=False)
+    is_checked_category3 = models.BooleanField(default=True, null=True, blank=True)
+    category4 = models.CharField(max_length=30, default="Team", null=False, blank=False, editable=False)
+    is_checked_category4 = models.BooleanField(default=True, null=True, blank=True)
+    category5 = models.CharField(max_length=30, default="Sport", null=False, blank=False, editable=False)
+    is_checked_category5 = models.BooleanField(default=True, null=True, blank=True)
+    category6 = models.CharField(max_length=30, default="Group", null=False, blank=False, editable=False)
+    is_checked_category6 = models.BooleanField(default=True, null=True, blank=True)
+    category7 = models.CharField(max_length=30, default="Other", null=False, blank=False, editable=False)
+    is_checked_category7 = models.BooleanField(default=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        db_table = 'Division_table'
+        verbose_name = '카테고리목록'
+        verbose_name_plural = '카테고리목록'
     

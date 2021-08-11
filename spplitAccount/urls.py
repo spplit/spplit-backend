@@ -11,6 +11,11 @@ category_list = CategoryViewSet.as_view({
     'get': 'list',
 })
 
+division_list = DivisionViewSet.as_view({
+    'get': 'list',
+})
+
+
 urlpatterns = [
     
     # path('register', RegisterView.as_view()),
@@ -25,5 +30,9 @@ urlpatterns = [
 
     path('user/category', category_list),
     path('user/category/change', ChangeCategoryView.as_view()),
+
+    path('user/division', division_list),
+    path('user/division/change', ChangeDivisionView.as_view()),
+
 ]
 

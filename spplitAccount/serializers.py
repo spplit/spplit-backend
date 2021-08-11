@@ -102,3 +102,23 @@ class ChangeCategorySerializer(serializers.Serializer) :
     category9 = serializers.CharField(required=False)
     category10 = serializers.CharField(required=False)
 
+
+class DivisionSerializer(serializers.ModelSerializer):
+
+    category1 = serializers.ReadOnlyField()
+    is_checked_category1 = serializers.ReadOnlyField()
+    category2 = serializers.ReadOnlyField()
+    is_checked_category2 = serializers.ReadOnlyField()
+    
+    class Meta:
+        model = Division
+        fields = '__all__'
+
+
+class ChangeDivisionSerializer(serializers.Serializer) :
+
+    is_checked_category3 = serializers.CharField()
+    is_checked_category4 = serializers.CharField()
+    is_checked_category5 = serializers.CharField()
+    is_checked_category6 = serializers.CharField()
+    is_checked_category7 = serializers.CharField()
