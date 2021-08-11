@@ -86,14 +86,14 @@ class Division(models.Model) :
     is_checked_category2 = models.BooleanField(default=True, editable=False)
     category3 = models.CharField(max_length=30, default="Work", null=False, blank=False, editable=False)
     is_checked_category3 = models.BooleanField(default=True, null=True, blank=True)
-    category4 = models.CharField(max_length=30, default="Team", null=False, blank=False, editable=False)
+    category4 = models.CharField(max_length=30, default="Group", null=False, blank=False, editable=False)
     is_checked_category4 = models.BooleanField(default=True, null=True, blank=True)
-    category5 = models.CharField(max_length=30, default="Sport", null=False, blank=False, editable=False)
-    is_checked_category5 = models.BooleanField(default=True, null=True, blank=True)
-    category6 = models.CharField(max_length=30, default="Group", null=False, blank=False, editable=False)
-    is_checked_category6 = models.BooleanField(default=True, null=True, blank=True)
-    category7 = models.CharField(max_length=30, default="Other", null=False, blank=False, editable=False)
-    is_checked_category7 = models.BooleanField(default=True, null=True, blank=True)
+    category5 = models.CharField(max_length=30, default="Sports", null=False, blank=False, editable=False)
+    is_checked_category5 = models.BooleanField(default=False, null=True, blank=True)
+    category6 = models.CharField(max_length=30, default="Hobby", null=False, blank=False, editable=False)
+    is_checked_category6 = models.BooleanField(default=False, null=True, blank=True)
+    category7 = models.CharField(max_length=30, default="Others", null=False, blank=False, editable=False)
+    is_checked_category7 = models.BooleanField(default=False, null=True, blank=True)
 
     def __str__(self):
         return self.user.username
